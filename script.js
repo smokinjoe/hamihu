@@ -95,13 +95,11 @@ var app = (function () {
       qb_rating_array.push(qbs[i].qb_rating.value);
       total_mvp_awards_array.push(qbs[i].total_mvp_awards.value);
     }
-
-    var _addQb = function(_qb) {
-      var qb = new Qb(_qb);
-      qbs.push(qb);
-      _resetQbRanking();
-    };
-
+  };
+  var _addQb = function(_qb) {
+    var qb = new Qb(_qb);
+    qbs.push(qb);
+    _resetQbRanking();
   };
 
   // public stuffs
@@ -115,6 +113,46 @@ var app = (function () {
       else {
         _addQb(_data);
       }
+    },
+    addQbFromJSON : function (_path) {
+      $.getJSON('/qbs.json', function(data) {
+        for (var i = 0; i < _data.length; i++) {
+          _addQb(_data[i]);
+        }
+      });
+    },
+    logQbs : function () {
+      console.log(qbs);
     }
   };
 }());
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
