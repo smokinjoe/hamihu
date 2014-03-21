@@ -1,5 +1,4 @@
-var QBS = {
-  "qbs" : [
+var QBS = [
     {
       "qb_name" : "Tom Brady",
       "sb_titles" : 3,
@@ -180,14 +179,14 @@ var QBS = {
       "qb_rating" : 80.9,
       "total_mvp_awards" : null
     },
-  ]
-};
+]
 
 var app = (function () {
   // private stuffs
   var qbs = [];
   var qb_index = 0;
   var ranked = false;
+  var overall = {};
   var Qb = function (_arg) {
     this.qb_name = _arg.qb_name;
     this.sb_titles = {
@@ -258,41 +257,27 @@ var app = (function () {
   var _qbsRanked = function () {
     ranked = true;
   };
-  var _rankQbBy = function (_prop) {
+  var _rankQbBy = function (_prop, lowestToHighest) {
+    lowestToHighest |= false;
     var _qbs = qbs;
     _qbs.sort(function(a,b) {
-      return parseFloat(a[_prop]) - parseFloat(b[_prop]);
+      return lowestToHighest ? parseFloat(b[_prop].value) - parseFloat(a[_prop].value) : parseFloat(a[_prop].value) - parseFloat(b[_prop].value);
     });
-
+    return _qbs;
   };
   var _rankQbs = function () {
-    var sb_titles_array = [];
-    var sb_appearances_array = [];
-    var total_offense_array = [];
-    var turnovers_array = [];
-    var reg_season_win_percentage_array = [];
-    var wins_array = [];
-    var total_regular_season_tds_array = [];
-    var playoff_win_percentage_array = [];
-    var total_playoff_games_array = [];
-    var yards_per_game_array = [];
-    var qb_rating_array = [];
-    var total_mvp_awards_array = [];
-
-    for (i = 0; i < qbs.length; i++) {
-      sb_titles_array.push(qbs[i].sb_titles.value);
-      sb_appearances_array.push(qbs[i].sb_appearances.value);
-      total_offense_array.push(qbs[i].total_offense.value);
-      turnovers_array.push(qbs[i].turnovers.value);
-      reg_season_win_percentage_array.push(qbs[i].reg_season_win_percentage.value);
-      wins_array.push(qbs[i].wins.value);
-      total_regular_season_tds_array.push(qbs[i].total_regular_season_tds.value);
-      playoff_win_percentage_array.push(qbs[i].playoff_win_percentage.value);
-      total_playoff_games_array.push(qbs[i].total_playoff_games.value);
-      yards_per_game_array.push(qbs[i].yards_per_game.value);
-      qb_rating_array.push(qbs[i].qb_rating.value);
-      total_mvp_awards_array.push(qbs[i].total_mvp_awards.value);
-    }
+    overall['sb_titles'] = _rankQbBy('sb_titles');
+    overall['sb_appearances'] = _rankQbBy('sb_appearances', true);
+    overall['total_offense'] = _rankQbBy('total_offense', true);
+    overall['turnovers'] = _rankQbBy('turnovers');
+    overall['reg_season_win_percentage'] = _rankQbBy('reg_season_win_percentage', true);
+    overall['wins'] = _rankQbBy('wins', true);
+    overall['total_regular_season_tds'] = _rankQbBy('total_regular_season_tds', true);
+    overall['playoff_win_percentage'] = _rankQbBy('playoff_win_percentage');
+    overall['total_playoff_games'] = _rankQbBy('total_playoff_games', true);
+    overall['yards_per_game'] = _rankQbBy('yards_per_game', true);
+    overall['qb_rating'] = _rankQbBy('qb_rating', true);
+    console.log(overall);
   };
   var _addQb = function(_qb) {
     var qb = new Qb(_qb);
@@ -303,7 +288,7 @@ var app = (function () {
   // public stuffs
   return {
     addQb : function (_data) {
-      if (typeof _data === "array") {
+      if (typeof _data === "object" || typeof _data === "array") {
         for (var i = 0; i < _data.length; i++) {
           _addQb(_data[i]);
         }
@@ -311,6 +296,9 @@ var app = (function () {
       else {
         _addQb(_data);
       }
+    },
+    rankEm : function() {
+      _rankQbs();
     },
     //addQbFromJSON : function (_path) {
     //  $.getJSON('/qbs.json', function(data) {
@@ -325,7 +313,7 @@ var app = (function () {
   };
 }());
 
-
+app.addQb(QBS);
 
 
 
