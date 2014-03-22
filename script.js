@@ -309,11 +309,73 @@ var app = (function () {
     //},
     logQbs : function () {
       console.log(qbs);
+    },
+    dumpQbs : function() {
+      return qbs;
     }
   };
 }());
 
-app.addQb(QBS);
+
+$("#loadUpQbs").click(function (e) {
+  e.preventDefault();
+  app.addQb(QBS);
+  $(this).attr('disabled','disabled');
+});
+
+$("#rankEm").click(function (e) {
+  e.preventDefault();
+  app.rankEm();
+});
+
+$("#logQbs").click(function (e) {
+  e.preventDefault();
+  app.logQbs();
+});
+
+$("#tableEm").click(function (e) {
+  e.preventDefault();
+  var _qbs = app.dumpQbs();
+  for (var i = 0; i < _qbs.length; i++) {
+    var _qb_name = _qbs[i].qb_name;
+    var _sb_titles = _qbs[i].sb_titles.value;
+    var _sb_appearances = _qbs[i].sb_appearances.value;
+    var _total_offense = _qbs[i].total_offense.value;
+    var _turnovers = _qbs[i].turnovers.value;
+    var _reg_season_win_percentage = _qbs[i].reg_season_win_percentage.value;
+    var _wins = _qbs[i].wins.value;
+    var _total_regular_season_tds = _qbs[i].total_regular_season_tds.value;
+    var _playoff_win_percentage = _qbs[i].playoff_win_percentage.value;
+    var _total_playoff_games = _qbs[i].total_playoff_games.value;
+    var _yards_per_game = _qbs[i].yards_per_game.value;
+    var _qb_rating = _qbs[i].qb_rating.value;
+    var _total_mvp_awards = _qbs[i].total_mvp_awards.value;
+    var _string = '<tr>' +
+                    '<td>' + _qb_name + '</td>' +
+                    '<td>' + _sb_titles + '</td>' +
+                    '<td>' + _sb_appearances + '</td>' +
+                    '<td>' + _total_offense + '</td>' +
+                    '<td>' + _turnovers + '</td>' +
+                    '<td>' + _reg_season_win_percentage + '</td>' +
+                    '<td>' + _wins + '</td>' +
+                    '<td>' + _total_regular_season_tds + '</td>' +
+                    '<td>' + _playoff_win_percentage + '</td>' +
+                    '<td>' + _total_playoff_games + '</td>' +
+                    '<td>' + _yards_per_game + '</td>' +
+                    '<td>' + _qb_rating + '</td>' +
+                    '<td>' + _total_mvp_awards + '</td>' +
+                  '</tr>';
+    $("#quarterback-table").append(_string);
+  }
+});
+
+
+
+
+
+
+
+
 
 
 
