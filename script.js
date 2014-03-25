@@ -258,12 +258,18 @@ var app = (function () {
     ranked = true;
   };
   var _rankQbBy = function (_prop, lowestToHighest) {
+    return (function() {
     lowestToHighest |= false;
-    var _qbs = qbs;
+    var _qbs = {};
+    _qbs = qbs;
     _qbs.sort(function(a,b) {
+      //console.log(a);
       return lowestToHighest ? parseFloat(b[_prop].value) - parseFloat(a[_prop].value) : parseFloat(a[_prop].value) - parseFloat(b[_prop].value);
     });
+    // take a snapshot of each first
+
     return _qbs;
+    }());
   };
   var _rankQbs = function () {
     overall['sb_titles'] = _rankQbBy('sb_titles');
@@ -277,6 +283,7 @@ var app = (function () {
     overall['total_playoff_games'] = _rankQbBy('total_playoff_games', true);
     overall['yards_per_game'] = _rankQbBy('yards_per_game', true);
     overall['qb_rating'] = _rankQbBy('qb_rating', true);
+    // gettin my ass kicked over here
     console.log(overall);
   };
   var _addQb = function(_qb) {
