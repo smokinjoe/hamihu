@@ -89,11 +89,16 @@ var app = (function () {
     return this;
   };
 
-  Player.prototype.addStat = function (stat) {
+  Player.prototype.updatePlayerStats = function (stat) {
     if (stat.class !== "PlayerStat") {
       return;
     }
-    if (!this.stats.contains(stat)) {
+
+    var filteredStats = _.filter(this.stats, function (s) {
+      return s.stat_id === stat.stat_id;
+    });
+
+    if (!filteredStats.length) {
       this.stats.push(stat);
       return true;
     }
@@ -125,6 +130,19 @@ var app = (function () {
     },
     allStats : function () {
       return stats;
+    },
+
+    createPlayerStat : function (config) {
+      var playerStat;
+      config = config || {};
+      
+      if (config.stat && config.player) {
+        playerStat = config.stat.createPlayerStat(config.value);
+        config.player.updatePlayerStats(playerStat);
+        return config.player;
+      }
+
+      return false;
     }
 
   };
@@ -134,4 +152,39 @@ var app = (function () {
 // app.createPlayer({ name: "Joe" }); 
 
 // prime
-app.createPlayer({ name: "player1" }); app.createPlayer({ name: "player2" }); app.createPlayer({ name: "player3" }); app.createPlayer({ name: "player4" });
+//app.createPlayer({ name: "player1" }); app.createPlayer({ name: "player2" }); app.createPlayer({ name: "player3" }); app.createPlayer({ name: "player4" });
+//var stat = app.createStat({ name: 'stat' });
+//var player = app.getPlayer(1);
+//app.createPlayerStat({ player: player, stat: stat, value: 58 });
+
+
+var updatePlayerTable = function () {
+  var players = app.allPlayers(),
+      $table = $("#player-table");
+
+  $table.find('tbody').html('');
+  players.forEach(function (p) {
+    $table.find('tbody').append('<tr><td>' + p.name + '</td></tr>');
+  });
+};
+
+$("#player-form").submit(function () {
+  var $form = $(this);
+  app.createPlayer({ name: $form.find('.name').val() });
+  updatePlayerTable();
+  return false;
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
