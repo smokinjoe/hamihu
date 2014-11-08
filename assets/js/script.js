@@ -9,7 +9,6 @@ var app = (function () {
   var Stat = function (stat) {
     this.id = statIndex++;
     this.class = "Stat";
-
     this.name = stat.name;
     this.value = stat.value;
     stats.push(this);
@@ -17,19 +16,26 @@ var app = (function () {
 
   // Player class stuff
   var Player = function (player) {
-    this.id = playerIndex++;
-    this.class = "Player";
-
-    this.name = player.name;
-    this.stats = [];
-    players.push(this);
+    if (player) {
+      this.id = playerIndex++;
+      this.class = "Player";
+      
+      this.name = player.name;
+      this.stats = [];
+      players.push(this);
+    }
+    else {
+      return {
+        get : function (id) {
+          return players.filter(function (p) {
+            return p.id === id;
+          });
+        }
+      };
+    }
   };
 
   Player.prototype.destroy = function () {
-    var self = this;
-    return _.remove(players, function (p) {
-      return p.id === self.id;
-    });
   };
 
   Player.prototype.addStat = function (stat) {
@@ -38,22 +44,15 @@ var app = (function () {
     return self;
   };
 
-  var _getPlayer = function (id) {
-    var player = players.filter(function (p) {
-      return p.id === id;
-    });
-    return player[0];
-  };
-
   return {
     addPlayer : function (player) {
       return new Player(player);
     },
     getPlayer : function (id) {
-      return _getPlayer(id);
+      return Player().get(id);
     },
     removePlayer : function (id) {
-      return _getPlayer(id).destroy();
+      return Player().get(id).destroy();
     },
     allPlayers : function () {
       return players;
