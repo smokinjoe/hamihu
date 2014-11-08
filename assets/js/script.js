@@ -4,18 +4,28 @@ var app = (function () {
       playerIndex = 1;
   var stats = [],
       statIndex = 1;
+  var CONSTANTS = {
+    Classes: {
+      Stat : "Stat",
+      Player : "Player"
+      PlayerStat : "PlayerStat"
+    }
+  };
 
   // Stat class stuff
   var Stat = function (stat) {
     if (stat) {
       this.id = statIndex++;
-      this.class = "Stat";
+      this.class = CONSTANTS.Classes.Stat;
 
       this.name = stat.name;
       stats.push(this);
     }
     else {
       return {
+        class : function () {
+          return CONSTANTS.Classes.Stat;
+        },
         get : function (id) {
           return stats.filter(function (s) {
             return s.id === id;
@@ -48,7 +58,7 @@ var app = (function () {
 
   // Player Stat
   var PlayerStat = function (stat) {
-    this.class = "PlayerStat";
+    this.class = CONSTANTS.Classes.PlayerStat;
     this.stat_id = stat.id;
     this.name = stat.name;
   };
@@ -61,7 +71,7 @@ var app = (function () {
   var Player = function (player) {
     if (player) {
       this.id = playerIndex++;
-      this.class = "Player";
+      this.class = CONSTANTS.Classes.Player;
 
       this.name = player.name;
       this.stats = [];
@@ -69,6 +79,9 @@ var app = (function () {
     }
     else {
       return {
+        class : function () {
+          return CONSTANTS.Classes.Player;
+        },
         get : function (id) {
           var player = players.filter(function (p) {
             return p.id === id;
@@ -96,7 +109,7 @@ var app = (function () {
   };
 
   Player.prototype.updatePlayerStats = function (stat) {
-    if (stat.class !== "PlayerStat") {
+    if (stat.class !== CONSTANTS.Classes.PlayerStat) {
       return;
     }
 
