@@ -149,29 +149,41 @@ var app = (function () {
 
 }());
 
-// app.createPlayer({ name: "Joe" }); 
-
-// prime
-//app.createPlayer({ name: "player1" }); app.createPlayer({ name: "player2" }); app.createPlayer({ name: "player3" }); app.createPlayer({ name: "player4" });
-//var stat = app.createStat({ name: 'stat' });
-//var player = app.getPlayer(1);
-//app.createPlayerStat({ player: player, stat: stat, value: 58 });
-
-
-var updatePlayerTable = function () {
+var updateTable = function () {
   var players = app.allPlayers(),
+      stats = app.allStats(),
       $table = $("#player-table");
 
   $table.find('tbody').html('');
   players.forEach(function (p) {
-    $table.find('tbody').append('<tr><td>' + p.name + '</td></tr>');
+    $table.find('tbody').append('<tr data-id="' + p.id + '"><td>' + p.name + '</td></tr>');
+  });
+
+  $table.find('thead').html('<th>Name</th>');
+  stats.forEach(function (s) {
+    $table.find('thead').append('<th data-id="' + s.id + '">' + s.name + '</th>');
   });
 };
 
 $("#player-form").submit(function () {
-  var $form = $(this);
-  app.createPlayer({ name: $form.find('.name').val() });
-  updatePlayerTable();
+  var $form = $(this),
+      $input = $form.find('.name');
+  if ($input !== '') {
+    app.createPlayer({ name: $input.val() });
+    $input.val('');
+    updateTable();
+  }
+  return false;
+});
+
+$("#stat-form").submit(function () {
+  var $form = $(this),
+      $input = $form.find('.name');
+  if ($input !== '') {
+    app.createStat({ name: $input.val() });
+    $input.val('');
+    updateTable();
+  }
   return false;
 });
 
