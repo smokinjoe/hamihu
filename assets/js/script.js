@@ -40,19 +40,23 @@ var app = (function () {
 
   Stat.prototype.destroy = function () {
     var self = this;
-    return _.remove(stat, function (s) {
+    var stat = _.remove(stat, function (s) {
       return s.id === self.id;
     });
+    digest();
+    return stat;
   };
 
   Stat.prototype.update = function (data) {
     this.name = data.name ? data.name : this.name;
+    digest();
     return this;
   };
 
   Stat.prototype.createPlayerStat = function (value) {
     var stat = new PlayerStat(this);
     stat.updateValue(value);
+    digest();
     return stat;
   };
 
@@ -76,6 +80,7 @@ var app = (function () {
       this.name = player.name;
       this.stats = [];
       players.push(this);
+      digest();
     }
     else {
       return {
@@ -97,14 +102,17 @@ var app = (function () {
 
   Player.prototype.destroy = function () {
     var self = this;
-    return _.remove(players, function (p) {
+    var player = _.remove(players, function (p) {
       return p.id === self.id;
     });
+    digest();
+    return player;
   };
 
   Player.prototype.update = function (data) {
     this.name = data.name ? data.name : this.name;
     this.stats = data.stats ? data.stats : this.stats;
+    digest();
     return this;
   };
 
@@ -119,6 +127,7 @@ var app = (function () {
 
     if (!filteredStats.length) {
       this.stats.push(stat);
+      digest();
       return true;
     }
     return false;
@@ -163,7 +172,6 @@ var app = (function () {
         var playerStat = s.createPlayerStat(0);
         player.updatePlayerStats(playerStat);
       });
-      digest();
       return player;
     },
     getPlayer : function (id) {
@@ -182,7 +190,6 @@ var app = (function () {
       Player().all().forEach(function (p) {
         p.updatePlayerStats(playerStat);
       });
-      digest();
       return stat;
     },
     getStat : function (id) {
