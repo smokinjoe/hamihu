@@ -20,6 +20,9 @@ var app = (function () {
           return stats.filter(function (s) {
             return s.id === id;
           });
+        },
+        all : function () {
+          return stats;
         }
       };
     }
@@ -71,6 +74,9 @@ var app = (function () {
             return p.id === id;
           });
           return player[0];
+        },
+        all : function () {
+          return players;
         }
       };
     }
@@ -108,7 +114,7 @@ var app = (function () {
   return {
     createPlayer : function (playerData) {
       var player = new Player(playerData);
-      stats.forEach(function (s) {
+      Stat().all().forEach(function (s) {
         var playerStat = s.createPlayerStat(0);
         player.updatePlayerStats(playerStat);
       });
@@ -121,13 +127,13 @@ var app = (function () {
       return Player().get(id).destroy();
     },
     allPlayers : function () {
-      return players;
+      return Player().all();
     },
 
     createStat : function (statData) {
       var stat = new Stat(statData);
       var playerStat = stat.createPlayerStat(0);
-      players.forEach(function (p) {
+      Player().all().forEach(function (p) {
         p.updatePlayerStats(playerStat);
       });
       return stat;
@@ -139,7 +145,7 @@ var app = (function () {
       return Stat().get(id).destroy();
     },
     allStats : function () {
-      return stats;
+      return Stat().all();
     }
 
   };
