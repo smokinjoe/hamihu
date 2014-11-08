@@ -3,16 +3,26 @@ var app = (function () {
   var players = [],
       playerIndex = 1;
 
+  var stats = [],
+      statIndex = 1;
+
   var Stat = function (stat) {
-    
+    this.id = statIndex++;
+    this.class = "Stat";
+
+    this.name = stat.name;
+    this.value = stat.value;
+    stats.push(this);
   };
 
+  // Player class stuff
   var Player = function (player) {
     this.id = playerIndex++;
     this.class = "Player";
 
     this.name = player.name;
     this.stats = [];
+    players.push(this);
   };
 
   Player.prototype.destroy = function () {
@@ -22,30 +32,28 @@ var app = (function () {
     });
   };
 
-  var _createPlayer = function (newPlayer) {
-    var player = new Player(newPlayer);
-    players.push(player);
-    return player;
+  Player.prototype.addStat = function (stat) {
+    var self = this;
+    // add from main array
+    return self;
   };
+
   var _getPlayer = function (id) {
     var player = players.filter(function (p) {
       return p.id === id;
     });
     return player[0];
   };
-  var _removePlayer = function (id) {
-    return _getPlayer(id).destroy();
-  };
 
   return {
-    addPlayer : function (data) {
-      return _createPlayer(data);
+    addPlayer : function (player) {
+      return new Player(player);
     },
     getPlayer : function (id) {
       return _getPlayer(id);
     },
     removePlayer : function (id) {
-      return _removePlayer(id);
+      return _getPlayer(id).destroy();
     },
     allPlayers : function () {
       return players;
