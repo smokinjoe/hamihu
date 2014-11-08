@@ -106,8 +106,13 @@ var app = (function () {
   };
 
   return {
-    createPlayer : function (player) {
-      return new Player(player);
+    createPlayer : function (playerData) {
+      var player = new Player(playerData);
+      stats.forEach(function (s) {
+        var playerStat = s.createPlayerStat(0);
+        player.updatePlayerStats(playerStat);
+      });
+      return player;
     },
     getPlayer : function (id) {
       return Player().get(id);
@@ -121,7 +126,7 @@ var app = (function () {
 
     createStat : function (statData) {
       var stat = new Stat(statData);
-      playerStat = stat.createPlayerStat(0);
+      var playerStat = stat.createPlayerStat(0);
       players.forEach(function (p) {
         p.updatePlayerStats(playerStat);
       });
@@ -153,11 +158,13 @@ var updateTable = function () {
 
   $table.find('tbody').html('');
   players.forEach(function (p) {
-    $table.find('tbody').append('<tr data-id="' + p.id + '"><td>' + p.name + '</td>');
+    var $tr = $("<tr />");
+    $tr.append('<td>' + p.name + '</td>');
     p.stats.forEach(function (s) {
-      $table.find('tbody').append('<td>' + s.value + '</td>');
+      $tr.append('<td>' + s.value + '</td>');
     });
-    $table.find('tbody').append('</tr>');
+    $tr.data('id', p.id);
+    $table.find('tbody').append($tr);
   });
 };
 
