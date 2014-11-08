@@ -7,7 +7,7 @@ var app = (function () {
   var CONSTANTS = {
     Classes: {
       Stat : "Stat",
-      Player : "Player"
+      Player : "Player",
       PlayerStat : "PlayerStat"
     }
   };
@@ -124,13 +124,46 @@ var app = (function () {
     return false;
   };
 
+  // Utility methods
+
+  var init = function () {
+    var sessionPlayers, sessionStats;
+    // check on sessionStorage
+    if (sessionStorage) {
+      sessionPlayers = JSON.parse(sessionStorage.getItem("hamihu.players")) || [];
+      sessionStats = JSON.parse(sessionStorage.getItem("hamihu.stats")) || [];
+
+      if (sessionPlayers.length) {
+        players.push(sessionPlayers);
+        playerIndex = players.length;
+      }
+
+      if (sessionStats.length) {
+        stats.push(sessionStats);
+        statsIndex = stats.length;
+      }
+    }
+
+  };
+
+  var digest = function () {
+    // update session storage
+    sessionStorage.setItem("hamihu.players", JSON.stringify(Player().all()));
+    sessionStorage.setItem("hamihu.stats", JSON.stringify(Stat().all()));
+  };
+
   return {
+    init : function () {
+      init();
+    },
+
     createPlayer : function (playerData) {
       var player = new Player(playerData);
       Stat().all().forEach(function (s) {
         var playerStat = s.createPlayerStat(0);
         player.updatePlayerStats(playerStat);
       });
+      digest();
       return player;
     },
     getPlayer : function (id) {
@@ -149,6 +182,7 @@ var app = (function () {
       Player().all().forEach(function (p) {
         p.updatePlayerStats(playerStat);
       });
+      digest();
       return stat;
     },
     getStat : function (id) {
@@ -212,9 +246,9 @@ $("#stat-form").submit(function () {
   return false;
 });
 
-
-
-
+$(document).ready(function () {
+  app.init();
+});
 
 
 
