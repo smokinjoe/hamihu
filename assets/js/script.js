@@ -33,9 +33,8 @@ var app = (function () {
   };
 
   Stat.prototype.update = function (data) {
-    var self = this;
-    self.name = data.name ? data.name : self.name;
-    return self;
+    this.name = data.name ? data.name : this.name;
+    return this;
   };
 
   Stat.prototype.createPlayerStat = function (value) {
@@ -85,10 +84,20 @@ var app = (function () {
   };
 
   Player.prototype.update = function (data) {
-    var self = this;
-    self.name = data.name ? data.name : self.name;
-    self.stats = data.stats ? data.stats : self.stats;
-    return self;
+    this.name = data.name ? data.name : this.name;
+    this.stats = data.stats ? data.stats : this.stats;
+    return this;
+  };
+
+  Player.prototype.addStat = function (stat) {
+    if (stat.class !== "PlayerStat") {
+      return;
+    }
+    if (!this.stats.contains(stat)) {
+      this.stats.push(stat);
+      return true;
+    }
+    return false;
   };
 
   return {
@@ -122,7 +131,7 @@ var app = (function () {
 
 }());
 
-// app.addPlayer({ name: "Joe" }); 
+// app.createPlayer({ name: "Joe" }); 
 
 // prime
-app.addPlayer({ name: "player1" }); app.addPlayer({ name: "player2" }); app.addPlayer({ name: "player3" }); app.addPlayer({ name: "player4" });
+app.createPlayer({ name: "player1" }); app.createPlayer({ name: "player2" }); app.createPlayer({ name: "player3" }); app.createPlayer({ name: "player4" });
