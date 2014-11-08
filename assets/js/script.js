@@ -119,8 +119,13 @@ var app = (function () {
       return players;
     },
 
-    createStat : function (stat) {
-      return new Stat(stat);
+    createStat : function (statData) {
+      var stat = new Stat(statData);
+      playerStat = stat.createPlayerStat(0);
+      players.forEach(function (p) {
+        p.updatePlayerStats(playerStat);
+      });
+      return stat;
     },
     getStat : function (id) {
       return Stat().get(id);
@@ -130,19 +135,6 @@ var app = (function () {
     },
     allStats : function () {
       return stats;
-    },
-
-    createPlayerStat : function (config) {
-      var playerStat;
-      config = config || {};
-      
-      if (config.stat && config.player) {
-        playerStat = config.stat.createPlayerStat(config.value);
-        config.player.updatePlayerStats(playerStat);
-        return config.player;
-      }
-
-      return false;
     }
 
   };
@@ -154,21 +146,26 @@ var updateTable = function () {
       stats = app.allStats(),
       $table = $("#player-table");
 
-  $table.find('tbody').html('');
-  players.forEach(function (p) {
-    $table.find('tbody').append('<tr data-id="' + p.id + '"><td>' + p.name + '</td></tr>');
+  $table.find('thead tr').html('<th>Name</th>');
+  stats.forEach(function (s) {
+    $table.find('thead tr').append('<th data-id="' + s.id + '">' + s.name + '</th>');
   });
 
-  $table.find('thead').html('<th>Name</th>');
-  stats.forEach(function (s) {
-    $table.find('thead').append('<th data-id="' + s.id + '">' + s.name + '</th>');
+  $table.find('tbody').html('');
+  players.forEach(function (p) {
+    $table.find('tbody').append('<tr data-id="' + p.id + '"><td>' + p.name + '</td>');
+    p.stats.forEach(function (s) {
+      $table.find('tbody').append('<td>' + s.value + '</td>');
+    });
+    $table.find('tbody').append('</tr>');
   });
 };
 
 $("#player-form").submit(function () {
   var $form = $(this),
       $input = $form.find('.name');
-  if ($input !== '') {
+
+  if ($input.val() !== '') {
     app.createPlayer({ name: $input.val() });
     $input.val('');
     updateTable();
@@ -178,8 +175,10 @@ $("#player-form").submit(function () {
 
 $("#stat-form").submit(function () {
   var $form = $(this),
-      $input = $form.find('.name');
-  if ($input !== '') {
+      $input = $form.find('.name'),
+      stat;
+
+  if ($input.val() !== '') {
     app.createStat({ name: $input.val() });
     $input.val('');
     updateTable();
