@@ -143,12 +143,12 @@ var app = (function () {
       sessionStats = JSON.parse(sessionStorage.getItem("hamihu.stats")) || [];
 
       if (sessionPlayers.length) {
-        players.push(sessionPlayers);
+        players = sessionPlayers;
         playerIndex = players.length;
       }
 
       if (sessionStats.length) {
-        stats.push(sessionStats);
+        stats = sessionStats;
         statsIndex = stats.length;
       }
     }
@@ -165,10 +165,14 @@ var app = (function () {
     init : function () {
       init();
     },
+    clear : function () {
+      sessionStorage.clear();
+    },
 
     createPlayer : function (playerData) {
       var player = new Player(playerData);
       Stat().all().forEach(function (s) {
+        console.log("JOE: s: ", s);
         var playerStat = s.createPlayerStat(0);
         player.updatePlayerStats(playerStat);
       });
