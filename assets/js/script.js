@@ -1,9 +1,9 @@
 var app = (function () {
   // privates
   var players = [],
-      playerIndex = 1;
+      playerIndex = players.length;
   var stats = [],
-      statIndex = 1;
+      statIndex = stats.length;
   var CONSTANTS = {
     Classes: {
       Stat : "Stat",
@@ -18,7 +18,7 @@ var app = (function () {
   // Stat class stuff
   var Stat = function (stat) {
     if (stat) {
-      this.id = statIndex++;
+      this.id = stat.id || ++statIndex;
       this.class = CONSTANTS.Classes.Stat;
 
       this.name = stat.name;
@@ -77,11 +77,11 @@ var app = (function () {
   // Player class stuff
   var Player = function (player) {
     if (player) {
-      this.id = playerIndex++;
+      this.id = player.id || ++playerIndex;
       this.class = CONSTANTS.Classes.Player;
 
       this.name = player.name;
-      this.stats = [];
+      this.stats = player.stats || [];
       players.push(this);
       digest();
     }
@@ -138,7 +138,7 @@ var app = (function () {
 
   // Utility methods
 
-  var init = function () {
+  var loadSession = function () {
     var sessionPlayers, sessionStats;
     // check on sessionStorage
     if (sessionStorage) {
@@ -148,19 +148,21 @@ var app = (function () {
       if (sessionPlayers.length) {
         players = sessionPlayers;
         players.forEach(function (p) {
-          p.prototype = Player.prototype;
+          p.prototype = new Player();
         });
+        console.log("JOE: players: ", players);
       }
 
       if (sessionStats.length) {
         stats = sessionStats;
         stats.forEach(function (s) {
-          s.prototype = Stat.prototype;
+          s.prototype = new Stat();
         });
+        console.log("JOE: stats: ", stats);
       }
     }
-
   };
+
 
   var digest = function () {
     // update session storage
@@ -170,7 +172,7 @@ var app = (function () {
 
   return {
     init : function () {
-      init();
+      loadSession();
     },
     clear : function () {
       stats = players = [];
@@ -262,6 +264,11 @@ $("#stat-form").delegate('a', 'click', function () {
     updateTable();
   }
   return false;
+});
+
+$("#clear-data").delegate('a', 'click', function () {
+  app.clear();
+  updateTable();
 });
 
 $(document).ready(function () {
