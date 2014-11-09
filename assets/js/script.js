@@ -173,6 +173,7 @@ var app = (function () {
       init();
     },
     clear : function () {
+      stats = players = [];
       sessionStorage.clear();
     },
 
