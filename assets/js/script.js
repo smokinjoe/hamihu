@@ -9,6 +9,9 @@ var app = (function () {
       Stat : "Stat",
       Player : "Player",
       PlayerStat : "PlayerStat"
+    },
+    PlayerStat: {
+      InitialValue : 0
     }
   };
 
@@ -40,7 +43,7 @@ var app = (function () {
 
   Stat.prototype.destroy = function () {
     var self = this;
-    var stat = _.remove(stat, function (s) {
+    var stat = _.remove(stats, function (s) {
       return s.id === self.id;
     });
     digest();
@@ -144,12 +147,16 @@ var app = (function () {
 
       if (sessionPlayers.length) {
         players = sessionPlayers;
-        playerIndex = players.length;
+        players.forEach(function (p) {
+          p.prototype = Player.prototype;
+        });
       }
 
       if (sessionStats.length) {
         stats = sessionStats;
-        statsIndex = stats.length;
+        stats.forEach(function (s) {
+          s.prototype = Stat.prototype;
+        });
       }
     }
 
@@ -172,8 +179,7 @@ var app = (function () {
     createPlayer : function (playerData) {
       var player = new Player(playerData);
       Stat().all().forEach(function (s) {
-        console.log("JOE: s: ", s);
-        var playerStat = s.createPlayerStat(0);
+        var playerStat = s.createPlayerStat(CONSTANTS.PlayerStat.InitialValue);
         player.updatePlayerStats(playerStat);
       });
       return player;
@@ -232,8 +238,8 @@ var updateTable = function () {
   });
 };
 
-$("#player-form").submit(function () {
-  var $form = $(this),
+$("#player-form").delegate('a', 'click', function () {
+  var $form = $("#player-form"),
       $input = $form.find('.name');
 
   if ($input.val() !== '') {
@@ -244,8 +250,8 @@ $("#player-form").submit(function () {
   return false;
 });
 
-$("#stat-form").submit(function () {
-  var $form = $(this),
+$("#stat-form").delegate('a', 'click', function () {
+  var $form = $("#stat-form"),
       $input = $form.find('.name'),
       stat;
 
