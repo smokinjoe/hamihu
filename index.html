@@ -9,30 +9,33 @@
   </head>
   <body>
 
-    <h1>Hello</h1>
+    <div class="row">
+      <div class="large-12 columns">
 
-    <h3>Add a player</h3>
-    <form id="player-form">
-      <input type="text" name="name" class="name" />
-      <a class="button" type="submit">Create</a>
-    </form>
-
-    <form id="stat-form">
-      <input type="text" name="name" class="name" />
-      <a class="button" type="submit">Create</a>
-    </form>
-
-    <a class="button warning" onclick="app.clear()">clear</a>
-
-    <table id="player-table">
-      <thead>
-        <tr>
-          <th>Name</th>
-        </tr>
-      </thead>
-      <tbody>
-      </tbody>
-    </table>
+        <h3>Add a player</h3>
+        <form id="player-form">
+          <input type="text" name="name" class="name" />
+          <a class="button" type="submit">Create</a>
+        </form>
+    
+        <form id="stat-form">
+          <input type="text" name="name" class="name" />
+          <a class="button" type="submit">Create</a>
+        </form>
+    
+        <a class="button danger" onclick="app.clear()">clear</a>
+    
+        <table id="player-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+    </div>
 
     <script src="assets/js/vendor/jquery.js"></script>
     <script src="assets/js/lodash.js"></script>
