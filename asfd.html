@@ -1,0 +1,74 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Foundation | Welcome</title>
+    <link rel="stylesheet" href="assets/css/foundation.css" />
+    <script src="assets/js/vendor/modernizr.js"></script>
+  </head>
+  <body>
+    
+    <div class="row">
+      <div class="large-12 columns">
+        <h1>Let's test out some qb ranking stuff</h1>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="large-12 columns">
+      	<div class="panel">
+	        <h3>Let's get this shit on the road. </h3>
+	        <p>Uhmmm.  Yes.</p>
+	        <div class="row">
+	        	<div class="large-3 medium-3 columns">
+              <p><a href="#" id="loadUpQbs" class="small button">LOAD EM</a></p>
+	    	    </div>
+	        	<div class="large-3 medium-3 columns">
+              <p><a href="#" id="rankEm" class="small button">RANK EM</a></p>
+	        	</div>
+	        	<div class="large-3 medium-3 columns">
+              <p><a href="#" id="logQbs" class="small button">LOG EM</a></p>
+	        	</div>        
+            <div class="large-3 medium-3 columns">
+              <p><a href="#" id="tableEm" class="small button">TABLE EM</a></p>
+            </div>        
+					</div>
+      	</div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="large-12 columns">
+        <table>
+          <thead>
+            <tr>
+              <th>Qb</th>
+              <th>SB titles</th>
+              <th>SB appearances</th>
+              <th>Total offense</th>
+              <th>Turovers</th>
+              <th>Reg season win%</th>
+              <th>Wins</th>
+              <th>Total season TDs</th>
+              <th>Playoff winning%</th>
+              <th>Total playoff games</th>
+              <th>Yards per game</th>
+              <th>QB rating</th>
+              <th>MVP awards</th>
+            </tr>
+          </thead>
+          <tbody id="quarterback-table">
+          <!-- hidden stuff -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <script src="assets/js/vendor/jquery.js"></script>
+    <script src="assets/js/foundation.min.js"></script>
+    <script src="script.js"></script>
+    <script>
+      $(document).foundation();
+    </script>
+  </body>
+</html>

@@ -1,45 +1,40 @@
 <!doctype html>
-<html class="no-js" ng-app="hamihu.app" lang="en">
+<html ng-app="hamihu.app" lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Foundation | Welcome</title>
+    <title>HAMIHU</title>
     <link rel="stylesheet" href="assets/css/foundation.css" />
     <script src="assets/js/vendor/modernizr.js"></script>
   </head>
   <body>
+    <div>
+      <div class="row">
+        <div class="large-12 columns">
 
-    <div class="row">
-      <div class="large-12 columns">
+          <h3>Add a player</h3>
+          <form id="player-form">
+            <input type="text" name="name" class="name" />
+            <a class="button" type="submit">Create</a>
+          </form>
 
-        <h3>Add a player</h3>
-        <form id="player-form">
-          <input type="text" name="name" class="name" />
-          <a class="button" type="submit">Create</a>
-        </form>
-    
-        <form id="stat-form">
-          <input type="text" name="name" class="name" />
-          <a class="button" type="submit">Create</a>
-        </form>
-    
-        <a class="button" id="clear-data">clear</a>
-    
-        <table id="player-table">
-          <thead>
-            <tr>
-              <th>Name</th>
-            </tr>
-          </thead>
-          <tbody>
-          </tbody>
-        </table>
+          <table id="player-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
-
+    <script src="assets/js/angular.min.js"></script>
     <script src="assets/js/vendor/jquery.js"></script>
     <script src="assets/js/lodash.js"></script>
-    <script src="assets/js/promise.js"></script>
-    <script src="assets/js/script.js"></script>
+    <script src="assets/js/services.js"></script>
+    <script src="assets/js/controllers.js"></script>
+    <script src="assets/js/app.js"></script>
   </body>
 </html>
